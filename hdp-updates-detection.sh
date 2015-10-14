@@ -1,0 +1,28 @@
+#!/bin/bash
+
+#
+# If MacOS, please brew install coreutils
+# gdate will be used then instead of date
+#
+DATE=$(which gdate)
+if [ -z $DATE ]
+then
+    DATE=/bin/date
+fi
+
+CURRENT_FILE="hdp_urlinfo.json.$($DATE "+%Y-%y-%d")"
+PREVIOUS_FILE=$(find . -maxdepth 1 -name "hdp_urlinfo.json.*" | grep -v $CURRENT_FILE | sort | tail -n 1)
+
+status=$(curl -s -o $CURRENT_FILE -w "%{http_code}" http://s3.amazonaws.com/dev.hortonworks.com/HDP/hdp_urlinfo.json)
+
+if [ "$status" -ne "200" ]
+then
+    echo "Error fetching the hdp_urlinfo"
+    exit 1
+fi
+
+if [ -f $PREVIOUS_FILE ]
+then
+    diff -u $PREVIOUS_FILE $CURRENT_FILE
+fi
+
