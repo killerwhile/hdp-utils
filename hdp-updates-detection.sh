@@ -3,11 +3,18 @@
 #
 # If MacOS, please brew install coreutils
 # gdate will be used then instead of date
+# ghead will be used then instead of head
 #
 DATE=$(which gdate)
 if [ -z $DATE ]
 then
     DATE=/bin/date
+fi
+
+HEAD=$(which ghead)
+if [ -z $HEAD ]
+then
+    HEAD=/usr/bin/head
 fi
 
 CURRENT_FILE="hdp_urlinfo.json.$($DATE "+%Y-%y-%d")"
@@ -26,3 +33,5 @@ then
     diff -u $PREVIOUS_FILE $CURRENT_FILE
 fi
 
+# Keep only two files.
+find . -maxdepth 1 -name "hdp_urlinfo.json.*" | sort | $HEAD -n -2 | xargs --no-run-if-empty rm
