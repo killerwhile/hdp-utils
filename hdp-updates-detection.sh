@@ -28,7 +28,7 @@ then
     exit 1
 fi
 
-if [ -f $PREVIOUS_FILE ]
+if [ ! -z $PREVIOUS_FILE -a -f $PREVIOUS_FILE ]
 then
     diff -u $PREVIOUS_FILE $CURRENT_FILE
 fi
