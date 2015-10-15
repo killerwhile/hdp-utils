@@ -33,5 +33,8 @@ then
     diff -u $PREVIOUS_FILE $CURRENT_FILE
 fi
 
-# Keep only two files.
-find . -maxdepth 1 -name "hdp_urlinfo.json.*" | sort | $HEAD -n -2 | xargs --no-run-if-empty rm
+# Keep only two files. 
+# workaround | xargs --no-run-if-empty which does not exists in BSD version of xargs.
+# see http://stackoverflow.com/a/24105039 for details
+var=$(find . -maxdepth 1 -name "hdp_urlinfo.json.*" | sort | $HEAD -n -2)
+test "$var" && rm $var
