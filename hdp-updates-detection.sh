@@ -17,7 +17,7 @@ then
     HEAD=/usr/bin/head
 fi
 
-CURRENT_FILE="hdp_urlinfo.json.$($DATE "+%Y-%y-%d")"
+CURRENT_FILE="hdp_urlinfo.json.$($DATE "+%Y-%m-%d")"
 PREVIOUS_FILE=$(find . -maxdepth 1 -name "hdp_urlinfo.json.*" | grep -v $CURRENT_FILE | sort | tail -n 1)
 
 status=$(curl -s -o $CURRENT_FILE -w "%{http_code}" http://s3.amazonaws.com/dev.hortonworks.com/HDP/hdp_urlinfo.json)
